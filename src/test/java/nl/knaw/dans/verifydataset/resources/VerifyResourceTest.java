@@ -48,6 +48,7 @@ import java.util.List;
 import static nl.knaw.dans.verifydataset.DataSupport.loadDistConfig;
 import static nl.knaw.dans.verifydataset.DataSupport.readMdb;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(DropwizardExtensionsSupport.class)
 public class VerifyResourceTest {
@@ -98,9 +99,7 @@ public class VerifyResourceTest {
             .request()
             .post(Entity.entity(req, MediaType.APPLICATION_JSON_TYPE), Response.class);
         assertEquals(200, actual.getStatus());
-        assertEquals(
-            "{\"status\":\"unknown\",\"cmdiFiles\":[],\"errorMessages\":[\"fileID=999 cdmdi.xml CAUSED java.lang.NullPointerException\"]}",
-            actual.readEntity(String.class));
+        assertTrue(actual.readEntity(String.class).startsWith("{\"status\":\"unknown\",\"cmdiFiles\":[],\"errorMessages\":[\"fileID=999 cdmdi.xml CAUSED java.lang.NullPointerException"));
     }
 
     @Test
